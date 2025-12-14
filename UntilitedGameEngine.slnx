@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="UntilitedGameEngine/UntilitedGameEngine.vcxproj" Id="3956e2e0-bb4d-49d4-8286-ec87b0054b29">
+    <BuildType Solution="Debug|x64" Project="Release" />
+  </Project>
+</Solution>

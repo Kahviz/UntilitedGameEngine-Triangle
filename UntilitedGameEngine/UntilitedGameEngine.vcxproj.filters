@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\ErrorHandling">
+      <UniqueIdentifier>{0535e4eb-eb11-4e38-8ac1-515fccb627e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controls">
+      <UniqueIdentifier>{e6e4cc01-9833-4629-9e1c-a670491293a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controls\KeyBoard">
+      <UniqueIdentifier>{102a2bda-25d7-4a27-ac85-732fbabdab02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controls\Mouse">
+      <UniqueIdentifier>{82e67980-cd4a-40b4-ba03-acba7b155cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\App">
+      <UniqueIdentifier>{a34986ca-884a-497a-984f-d2304e665b92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Misc">
+      <UniqueIdentifier>{081a5bda-400f-446e-af1f-58ed161065f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Misc\Timer">
+      <UniqueIdentifier>{ed06a60a-2588-440f-907b-1e5871208a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{fb88bc9b-29a1-4379-90d0-987d78cc9bfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ErrorHandling\Expectation">
+      <UniqueIdentifier>{1bc246a8-28cc-47a7-8a39-2704ebbea9d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Misc\Releaser">
+      <UniqueIdentifier>{9fc793b6-c04f-4281-9201-ba06f4ddddfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shader">
+      <UniqueIdentifier>{2e6ea389-c06f-41f6-95c0-fcd0ffefdd88}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Header Files\Controls\KeyBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Header Files\Controls\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Header Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Header Files\Misc\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Expectation.cpp">
+      <Filter>Header Files\ErrorHandling\Expectation</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Includer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Header Files\Controls\KeyBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Header Files\Controls\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\Misc\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Expection.h">
+      <Filter>Header Files\ErrorHandling\Expectation</Filter>
+    </ClInclude>
+    <ClInclude Include="Releaser.h">
+      <Filter>Header Files\Misc\Releaser</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="UntilitedGameEngine.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\UntilitedGameEngine\Icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Header Files\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Header Files\Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>
