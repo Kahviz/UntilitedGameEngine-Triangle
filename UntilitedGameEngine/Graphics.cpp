@@ -33,7 +33,6 @@ Graphics::Graphics(HWND hWnd)
         &pContext
     );
 
-    // ===== Back buffer =====
     ID3D11Texture2D* pBackBuffer = nullptr;
     pSwap->GetBuffer(
         0,
@@ -48,10 +47,8 @@ Graphics::Graphics(HWND hWnd)
     );
     pBackBuffer->Release();
 
-    // 🔥 TÄMÄ PUUTTUI – ILMAN TÄTÄ EI PIIRRY MITÄÄN
     pContext->OMSetRenderTargets(1u, &pTarget, nullptr);
 
-    // 🔥 TÄMÄ PUUTTUI – ILMAN TÄTÄ CLIPPI MENEE VÄÄRIN
     D3D11_VIEWPORT vp = {};
     vp.Width = 800.0f;
     vp.Height = 600.0f;
@@ -78,10 +75,8 @@ void Graphics::DrawTestTriangle()
 {
     HRESULT hr;
 
-    // ===== Render target =====
     pContext->OMSetRenderTargets(1u, &pTarget, nullptr);
 
-    // ===== Viewport =====
     D3D11_VIEWPORT vp = {};
     vp.Width = 800.0f;
     vp.Height = 600.0f;
@@ -89,7 +84,6 @@ void Graphics::DrawTestTriangle()
     vp.MaxDepth = 1.0f;
     pContext->RSSetViewports(1u, &vp);
 
-    // ===== Vertex data =====
     struct Vertex { float x, y; };
     Vertex vertices[] =
     {
@@ -114,7 +108,6 @@ void Graphics::DrawTestTriangle()
     UINT offset = 0u;
     pContext->IASetVertexBuffers(0u, 1u, &vb, &stride, &offset);
 
-    // ===== Shaders =====
     ID3DBlob* vsBlob = nullptr;
     ID3DBlob* psBlob = nullptr;
     ID3D11VertexShader* vs = nullptr;
