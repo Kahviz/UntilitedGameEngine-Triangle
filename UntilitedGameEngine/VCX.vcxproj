@@ -1,0 +1,8 @@
+<ItemGroup>
+  <None Include="VertexShader.hlsl">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+  <None Include="PixelShader.hlsl">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>

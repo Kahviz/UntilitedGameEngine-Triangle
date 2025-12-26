@@ -1,315 +1,138 @@
 #include "Camera.h"
-#include <DirectXMath.h>
-#include <cmath>
 
-using namespace DirectX;
-
-Camera::Camera() noexcept
+Camera::Camera()
 {
-    SetProjectionValues(90.0f, 16.0f / 9.0f, 0.1f, 100.0f);
+	this->pos = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	this->posVector = XMLoadFloat3(&this->pos);
+	this->rot = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	this->rotVector = XMLoadFloat3(&this->rot);
+	this->UpdateViewMatrix();
 }
 
-// POSITION FUNCTIONS
-void Camera::SetPosition(float x, float y, float z) noexcept
+void Camera::SetProjectionValues(float fovDegrees, float aspectRatio, float nearZ, float farZ)
 {
-    pos = XMFLOAT3(x, y, z);
-    isViewDirty = true;
+	float fovRadians = (fovDegrees / 360.0f) * XM_2PI;
+	this->projectionMatrix = XMMatrixPerspectiveFovLH(fovRadians, aspectRatio, nearZ, farZ);
 }
 
-void Camera::SetRotation(float pitch, float yaw, float roll) noexcept
+const XMMATRIX& Camera::GetViewMatrix() const
 {
-    rot = XMFLOAT3(pitch, yaw, roll);
-    NormalizeAngles(rot);
-    isViewDirty = true;
+	return this->viewMatrix;
 }
 
-void Camera::AdjustPosition(float x, float y, float z) noexcept
+const XMMATRIX& Camera::GetProjectionMatrix() const
 {
-    pos.x += x;
-    pos.y += y;
-    pos.z += z;
-    isViewDirty = true;
+	return this->projectionMatrix;
 }
 
-void Camera::AdjustPosition(XMFLOAT3 delta) noexcept
+const XMVECTOR& Camera::GetPositionVector() const
 {
-    pos.x += delta.x;
-    pos.y += delta.y;
-    pos.z += delta.z;
-    isViewDirty = true;
+	return this->posVector;
 }
 
-void Camera::AdjustRotation(float pitch, float yaw, float roll) noexcept
+const XMFLOAT3& Camera::GetPositionFloat3() const
 {
-    rot.x += pitch;
-    rot.y += yaw;
-    rot.z += roll;
-    NormalizeAngles(rot);
-    isViewDirty = true;
+	return this->pos;
 }
 
-// VECTOR GETTERS
-XMVECTOR Camera::GetPositionVector() const noexcept
+const XMVECTOR& Camera::GetRotationVector() const
 {
-    return XMLoadFloat3(&pos);
+	return this->rotVector;
 }
 
-XMVECTOR Camera::GetRotationVector() const noexcept
+const XMFLOAT3& Camera::GetRotationFloat3() const
 {
-    return XMLoadFloat3(&rot);
+	return this->rot;
 }
 
-// DIRECTION VECTORS
-XMFLOAT3 Camera::GetForwardVector() const noexcept
+void Camera::SetPosition(const XMVECTOR& pos)
 {
-    // Convert angles to radians
-    float pitchRad = ToRadians(rot.x);
-    float yawRad = ToRadians(rot.y);
-
-    // Calculate forward vector from angles (FPS-style)
-    XMFLOAT3 forward;
-    forward.x = sinf(yawRad) * cosf(pitchRad);
-    forward.y = -sinf(pitchRad); // Negative because Y is up in world but down in screen
-    forward.z = cosf(yawRad) * cosf(pitchRad);
-
-    // Normalize
-    float length = sqrtf(forward.x * forward.x + forward.y * forward.y + forward.z * forward.z);
-    if (length > 0.0f)
-    {
-        forward.x /= length;
-        forward.y /= length;
-        forward.z /= length;
-    }
-
-    return forward;
+	XMStoreFloat3(&this->pos, pos);
+	this->posVector = pos;
+	this->UpdateViewMatrix();
 }
 
-XMFLOAT3 Camera::GetRightVector() const noexcept
+void Camera::SetPosition(float x, float y, float z)
 {
-    XMFLOAT3 forward = GetForwardVector();
-    XMFLOAT3 up = { 0.0f, 1.0f, 0.0f }; // World up
-
-    // Right = cross(world up, forward)
-    XMFLOAT3 right;
-    right.x = up.y * forward.z - up.z * forward.y;
-    right.y = up.z * forward.x - up.x * forward.z;
-    right.z = up.x * forward.y - up.y * forward.x;
-
-    // Normalize
-    float length = sqrtf(right.x * right.x + right.y * right.y + right.z * right.z);
-    if (length > 0.0f)
-    {
-        right.x /= length;
-        right.y /= length;
-        right.z /= length;
-    }
-
-    return right;
+	this->pos = XMFLOAT3(x, y, z);
+	this->posVector = XMLoadFloat3(&this->pos);
+	this->UpdateViewMatrix();
 }
 
-XMFLOAT3 Camera::GetUpVector() const noexcept
+void Camera::AdjustPosition(const XMVECTOR& pos)
 {
-    XMFLOAT3 forward = GetForwardVector();
-    XMFLOAT3 right = GetRightVector();
-
-    // Up = cross(forward, right)
-    XMFLOAT3 up;
-    up.x = forward.y * right.z - forward.z * right.y;
-    up.y = forward.z * right.x - forward.x * right.z;
-    up.z = forward.x * right.y - forward.y * right.x;
-
-    return up;
+	this->posVector += pos;
+	XMStoreFloat3(&this->pos, this->posVector);
+	this->UpdateViewMatrix();
 }
 
-// XMVECTOR VERSIONS
-XMVECTOR Camera::GetForwardVectorXM() const noexcept
+void Camera::AdjustPosition(float x, float y, float z)
 {
-    XMFLOAT3 forward = GetForwardVector();
-    return XMLoadFloat3(&forward);
+	this->pos.x += x;
+	this->pos.y += y;
+	this->pos.z += z;
+	this->posVector = XMLoadFloat3(&this->pos);
+	this->UpdateViewMatrix();
 }
 
-XMVECTOR Camera::GetRightVectorXM() const noexcept
+void Camera::SetRotation(const XMVECTOR& rot)
 {
-    XMFLOAT3 right = GetRightVector();
-    return XMLoadFloat3(&right);
+	this->rotVector = rot;
+	XMStoreFloat3(&this->rot, rot);
+	this->UpdateViewMatrix();
 }
 
-XMVECTOR Camera::GetUpVectorXM() const noexcept
+void Camera::SetRotation(float x, float y, float z)
 {
-    XMFLOAT3 up = GetUpVector();
-    return XMLoadFloat3(&up);
+	this->rot = XMFLOAT3(x, y, z);
+	this->rotVector = XMLoadFloat3(&this->rot);
+	this->UpdateViewMatrix();
 }
 
-// MATRIX GETTERS
-XMMATRIX Camera::GetViewMatrix() const noexcept
+void Camera::AdjustRotation(const XMVECTOR& rot)
 {
-    if (isViewDirty)
-    {
-        UpdateViewMatrix();
-    }
-    return viewMatrix;
+	this->rotVector += rot;
+	XMStoreFloat3(&this->rot, this->rotVector);
+	this->UpdateViewMatrix();
 }
 
-XMMATRIX Camera::GetProjectionMatrix() const noexcept
+void Camera::AdjustRotation(float x, float y, float z)
 {
-    return projectionMatrix;
+	this->rot.x += x;
+	this->rot.y += y;
+	this->rot.z += z;
+	this->rotVector = XMLoadFloat3(&this->rot);
+	this->UpdateViewMatrix();
+}
+XMFLOAT3 Camera::GetForward() const
+{
+	XMMATRIX rotMatrix = XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z);
+	XMVECTOR forward = XMVector3TransformCoord(DEFAULT_FORWARD_VECTOR, rotMatrix);
+	XMFLOAT3 f;
+	XMStoreFloat3(&f, forward);
+	return f;
 }
 
-XMMATRIX Camera::GetViewProjectionMatrix() const noexcept
+XMFLOAT3 Camera::GetRight() const
 {
-    return GetViewMatrix() * GetProjectionMatrix();
+	XMMATRIX rotMatrix = XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z);
+	XMVECTOR right = XMVector3TransformCoord(DEFAULT_RIGHT_VECTOR, rotMatrix);
+	XMFLOAT3 r;
+	XMStoreFloat3(&r, right);
+	return r;
 }
 
-// PROJECTION SETTINGS
-void Camera::SetProjectionValues(float fovDegrees, float aspectRatio, float nearZ, float farZ) noexcept
+
+void Camera::UpdateViewMatrix() //Updates view matrix and also updates the movement vectors
 {
-    this->fov = fovDegrees;
-    this->aspectRatio = aspectRatio;
-    this->nearZ = nearZ;
-    this->farZ = farZ;
-    this->isPerspective = true;
-    isProjectionDirty = true;
-}
-
-void Camera::SetOrthographicValues(float viewWidth, float viewHeight, float nearZ, float farZ) noexcept
-{
-    this->fov = viewHeight;
-    this->aspectRatio = viewWidth / viewHeight;
-    this->nearZ = nearZ;
-    this->farZ = farZ;
-    this->isPerspective = false;
-    isProjectionDirty = true;
-}
-
-// MOVEMENT FUNCTIONS
-void Camera::MoveForward(float distance) noexcept
-{
-    XMFLOAT3 forward = GetForwardVector();
-    AdjustPosition(forward.x * distance, forward.y * distance, forward.z * distance);
-}
-
-void Camera::MoveBackward(float distance) noexcept
-{
-    MoveForward(-distance);
-}
-
-void Camera::MoveLeft(float distance) noexcept
-{
-    XMFLOAT3 right = GetRightVector();
-    AdjustPosition(-right.x * distance, -right.y * distance, -right.z * distance);
-}
-
-void Camera::MoveRight(float distance) noexcept
-{
-    XMFLOAT3 right = GetRightVector();
-    AdjustPosition(right.x * distance, right.y * distance, right.z * distance);
-}
-
-void Camera::MoveUp(float distance) noexcept
-{
-    AdjustPosition(0.0f, distance, 0.0f);
-}
-
-void Camera::MoveDown(float distance) noexcept
-{
-    AdjustPosition(0.0f, -distance, 0.0f);
-}
-
-// LOOK AT
-void Camera::LookAt(XMFLOAT3 target) noexcept
-{
-    // Simple look-at: calculate rotation to look at target
-    XMVECTOR eye = XMLoadFloat3(&pos);
-    XMVECTOR targetVec = XMLoadFloat3(&target);
-
-    // Calculate direction vector
-    XMVECTOR direction = XMVectorSubtract(targetVec, eye);
-    direction = XMVector3Normalize(direction);
-
-    // Extract yaw and pitch from direction vector
-    XMFLOAT3 dir;
-    XMStoreFloat3(&dir, direction);
-
-    // Calculate yaw (horizontal angle)
-    float yaw = atan2f(dir.x, dir.z) * (180.0f / XM_PI);
-
-    // Calculate pitch (vertical angle)
-    float pitch = -asinf(dir.y) * (180.0f / XM_PI); // Negative because in screen Y goes down
-
-    SetRotation(pitch, yaw, rot.z);
-}
-
-// UPDATE
-void Camera::Update(float dt) noexcept
-{
-    // Optional: implement smooth movement or interpolation here
-    // Currently does nothing, but can be used for advanced camera behaviors
-}
-
-// PRIVATE METHODS
-void Camera::UpdateViewMatrix() const noexcept
-{
-    // Convert angles to radians
-    float pitchRad = ToRadians(rot.x);
-    float yawRad = ToRadians(rot.y);
-    float rollRad = ToRadians(rot.z);
-
-    // Create rotation quaternion
-    XMVECTOR quaternion = XMQuaternionRotationRollPitchYaw(pitchRad, yawRad, rollRad);
-
-    // Create rotation matrix from quaternion
-    XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(quaternion);
-
-    // Set forward vector (looking down positive Z)
-    XMVECTOR forward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-    forward = XMVector3TransformNormal(forward, rotationMatrix);
-
-    // Set up vector (positive Y)
-    XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-    up = XMVector3TransformNormal(up, rotationMatrix);
-
-    // Calculate target position
-    XMVECTOR position = XMLoadFloat3(&pos);
-    XMVECTOR target = XMVectorAdd(position, forward);
-
-    // Create view matrix
-    viewMatrix = XMMatrixLookAtLH(position, target, up);
-    isViewDirty = false;
-}
-
-void Camera::UpdateProjectionMatrix() noexcept
-{
-    if (isPerspective)
-    {
-        // Perspective projection
-        float fovRad = ToRadians(fov);
-        projectionMatrix = XMMatrixPerspectiveFovLH(fovRad, aspectRatio, nearZ, farZ);
-    }
-    else
-    {
-        // Orthographic projection
-        float halfWidth = fov * aspectRatio * 0.5f;
-        float halfHeight = fov * 0.5f;
-        projectionMatrix = XMMatrixOrthographicOffCenterLH(
-            -halfWidth, halfWidth,
-            -halfHeight, halfHeight,
-            nearZ, farZ
-        );
-    }
-    isProjectionDirty = false;
-}
-
-void Camera::NormalizeAngles(XMFLOAT3& angles) noexcept
-{
-    // Keep pitch between -89 and 89 degrees (prevent gimbal lock)
-    if (angles.x > 89.0f) angles.x = 89.0f;
-    if (angles.x < -89.0f) angles.x = -89.0f;
-
-    // Wrap yaw between 0 and 360 degrees
-    angles.y = fmodf(angles.y, 360.0f);
-    if (angles.y < 0.0f) angles.y += 360.0f;
-
-    // Wrap roll between 0 and 360 degrees
-    angles.z = fmodf(angles.z, 360.0f);
-    if (angles.z < 0.0f) angles.z += 360.0f;
+	//Calculate camera rotation matrix
+	XMMATRIX camRotationMatrix = XMMatrixRotationRollPitchYaw(this->rot.x, this->rot.y, this->rot.z);
+	//Calculate unit vector of cam target based off camera forward value transformed by cam rotation matrix
+	XMVECTOR camTarget = XMVector3TransformCoord(this->DEFAULT_FORWARD_VECTOR, camRotationMatrix);
+	//Adjust cam target to be offset by the camera's current position
+	camTarget += this->posVector;
+	//Calculate up direction based on current rotation
+	XMVECTOR upDir = XMVector3TransformCoord(this->DEFAULT_UP_VECTOR, camRotationMatrix);
+	//Rebuild view matrix
+	this->viewMatrix = XMMatrixLookAtLH(this->posVector, camTarget, upDir);
 }

@@ -1,69 +1,42 @@
 #pragma once
 #include <DirectXMath.h>
+using namespace DirectX;
 
 class Camera
 {
 public:
-    Camera() noexcept;
+	Camera();
+	void SetProjectionValues(float fovDegrees, float aspectRatio, float nearZ, float farZ);
 
-    // Perustoiminnot
-    void SetPosition(float x, float y, float z) noexcept;
-    void SetRotation(float pitch, float yaw, float roll = 0.0f) noexcept;
-    void AdjustPosition(float x, float y, float z) noexcept;
-    void AdjustPosition(DirectX::XMFLOAT3 delta) noexcept;
-    void AdjustRotation(float pitch, float yaw, float roll = 0.0f) noexcept;
+	const XMMATRIX& GetViewMatrix() const;
+	const XMMATRIX& GetProjectionMatrix() const;
 
-    DirectX::XMFLOAT3 GetPositionFloat3() const noexcept { return pos; }
-    DirectX::XMFLOAT3 GetRotationFloat3() const noexcept { return rot; }
-    DirectX::XMVECTOR GetPositionVector() const noexcept;
-    DirectX::XMVECTOR GetRotationVector() const noexcept;
+	const XMVECTOR& GetPositionVector() const;
+	const XMFLOAT3& GetPositionFloat3() const;
+	const XMVECTOR& GetRotationVector() const;
+	const XMFLOAT3& GetRotationFloat3() const;
 
-    DirectX::XMFLOAT3 GetForwardVector() const noexcept;
-    DirectX::XMFLOAT3 GetRightVector() const noexcept;
-    DirectX::XMFLOAT3 GetUpVector() const noexcept;
-    DirectX::XMVECTOR GetForwardVectorXM() const noexcept;
-    DirectX::XMVECTOR GetRightVectorXM() const noexcept;
-    DirectX::XMVECTOR GetUpVectorXM() const noexcept;
-
-    DirectX::XMMATRIX GetViewMatrix() const noexcept;
-    DirectX::XMMATRIX GetProjectionMatrix() const noexcept;
-    DirectX::XMMATRIX GetViewProjectionMatrix() const noexcept;
-
-    // Projektion asetukset
-    void SetProjectionValues(float fovDegrees, float aspectRatio, float nearZ, float farZ) noexcept;
-    void SetOrthographicValues(float viewWidth, float viewHeight, float nearZ, float farZ) noexcept;
-
-    void MoveForward(float distance) noexcept;
-    void MoveBackward(float distance) noexcept;
-    void MoveLeft(float distance) noexcept;
-    void MoveRight(float distance) noexcept;
-    void MoveUp(float distance) noexcept;
-    void MoveDown(float distance) noexcept;
-
-    void LookAt(DirectX::XMFLOAT3 target) noexcept;
-
-    void Update(float dt) noexcept;
-
+	void SetPosition(const XMVECTOR& pos);
+	void SetPosition(float x, float y, float z);
+	void AdjustPosition(const XMVECTOR& pos);
+	void AdjustPosition(float x, float y, float z);
+	void SetRotation(const XMVECTOR& rot);
+	void SetRotation(float x, float y, float z);
+	void AdjustRotation(const XMVECTOR& rot);
+	void AdjustRotation(float x, float y, float z);
+	XMFLOAT3 GetForward() const;
+	XMFLOAT3 GetRight() const;
 private:
-    DirectX::XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };
-    DirectX::XMFLOAT3 rot = { 0.0f, 0.0f, 0.0f };
+	void UpdateViewMatrix();
+	XMVECTOR posVector;
+	XMVECTOR rotVector;
+	XMFLOAT3 pos;
+	XMFLOAT3 rot;
+	XMMATRIX viewMatrix;
+	XMMATRIX projectionMatrix;
 
-    DirectX::XMMATRIX projectionMatrix = DirectX::XMMatrixIdentity();
-
-    float fov = 90.0f;
-    float aspectRatio = 16.0f / 9.0f;
-    float nearZ = 0.1f;
-    float farZ = 1000.0f;
-    bool isPerspective = true;
-
-    mutable DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixIdentity();
-    mutable bool isViewDirty = true;
-    mutable bool isProjectionDirty = true;
-
-    void UpdateViewMatrix() const noexcept;
-    void UpdateProjectionMatrix() noexcept;
-
-    static float ToRadians(float degrees) noexcept { return degrees * (DirectX::XM_PI / 180.0f); }
-
-    static void NormalizeAngles(DirectX::XMFLOAT3& angles) noexcept;
+	const XMVECTOR DEFAULT_RIGHT_VECTOR = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	
+	const XMVECTOR DEFAULT_FORWARD_VECTOR = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	const XMVECTOR DEFAULT_UP_VECTOR = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 };

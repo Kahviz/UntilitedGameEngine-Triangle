@@ -11,9 +11,14 @@ int Mouse::Event::GetPosX() const noexcept
 	return x;
 }
 
-int Mouse::Event::GetPosY() const noexcept
+int Mouse::GetDeltaX() const noexcept
 {
-	return y;
+	return x - prevX;
+}
+
+int Mouse::GetDeltaY() const noexcept
+{
+	return y - prevY;
 }
 
 bool Mouse::Event::LeftIsPressed() const noexcept
@@ -45,10 +50,29 @@ void Mouse::Flush() noexcept
 	buffer = std::queue<Event>();
 }
 
+void Mouse::Update() noexcept
+{
+	prevX = x;
+	prevY = y;
+}
+bool Mouse::RightIsPressed() const noexcept
+{
+	return rightIsPressed;
+}
+
+bool Mouse::LeftIsPressed() const noexcept
+{
+	return leftIsPressed;
+}
+
 void Mouse::OnMouseMove(int newx, int newy) noexcept
 {
+	prevX = x;
+	prevY = y;
+
 	x = newx;
 	y = newy;
+
 	buffer.push(Event(Event::Type::Move, *this));
 	TrimBuffer();
 }

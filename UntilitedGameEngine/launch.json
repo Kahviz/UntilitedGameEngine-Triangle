@@ -1,0 +1,11 @@
+"configurations": [
+  {
+    "args": [],
+    "console": "integratedTerminal",
+    "cwd": "${workspaceFolder}/x64/Release",
+    "name": "UntilitedGameEngine",
+    "program": "${workspaceFolder}/x64/Release/UntilitedGameEngineBeta.exe",
+    "request": "launch",
+    "type": "cppvsdbg"
+  }
+]

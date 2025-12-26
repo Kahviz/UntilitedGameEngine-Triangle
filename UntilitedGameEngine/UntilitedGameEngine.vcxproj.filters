@@ -49,6 +49,12 @@
     <Filter Include="Header Files\Graphics\Mesh">
       <UniqueIdentifier>{893aff5b-dd54-47e7-a69b-e4f29621a7fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\Ui">
+      <UniqueIdentifier>{c98eb777-34bf-4c0c-9316-003d6f889a89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controls\Camera">
+      <UniqueIdentifier>{22a32ba5-4b22-4a34-847e-219b3c4314da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -77,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Header Files\Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Header Files\Controls\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControl.cpp">
+      <Filter>Header Files\Controls\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +125,12 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\Graphics\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Controls\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControl.h">
+      <Filter>Header Files\Controls\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="UntilitedGameEngine.rc">
@@ -131,5 +149,15 @@
     <FxCompile Include="PixelShader.hlsl">
       <Filter>Header Files\Shader</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="VCX.vcxproj">
+      <Filter>Header Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="launch.json">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

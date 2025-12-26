@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include "Mesh.h"
 #include <string>
+#include "Camera.h"
 
 using namespace DirectX;
 
@@ -24,8 +25,8 @@ public:
     Graphics(const Graphics&) = delete;
     Graphics& operator=(const Graphics&) = delete;
 
+    Camera& GetCamera();
     void EndFrame();
-    void LoadMesh(const std::string& filename);
     void DrawMesh(
         float deltaTime,
         Mesh& mesh,
@@ -38,9 +39,11 @@ public:
 
     void ClearBuffer(float r, float g, float b);
 
-    ID3D11Device* pDevice = nullptr;
+    void DrawTestTriangle(const XMFLOAT4& color);
 
+    ID3D11Device* pDevice = nullptr;
 private:
+    Camera camera;
     Mesh MeshManager;
     const float Gravity = 9.81f;
     int Fov = DirectX::XMConvertToRadians(90.0f);
@@ -56,6 +59,7 @@ private:
     ID3D11Buffer* pColorBuffer = nullptr;
     ID3D11VertexShader* pVS = nullptr;
     ID3D11PixelShader* pPS = nullptr;
+    ID3D11PixelShader* pGUIPS = nullptr;
     ID3D11InputLayout* pLayout = nullptr;
 
     ID3D11Buffer* pMeshVertexBuffer = nullptr;

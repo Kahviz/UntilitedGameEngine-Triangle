@@ -54,7 +54,21 @@ int App::Go()
 
 void App::DoFrame(float deltaTime)
 {
-    wnd.Gfx().ClearBuffer(0, 0, 0);
+    camC.MakeCameraControls(wnd, deltaTime);
+//CAm Ennen up
+    wnd.mouse.Update();
+
+
+    wnd.Gfx().ClearBuffer(0, 0, 100);
+
+    //wnd.Gfx().DrawTestTriangle({ 0.0f, 1.0f, 0.0f, 1.0f }); // vihreä
+
+    static int r = 0;
+    r += 1;
+    if (r >= 255)
+    {
+        r = 0;
+    }
 
     if (wnd.kbd.KeyIsPressed(VK_CONTROL))
     {
@@ -63,14 +77,15 @@ void App::DoFrame(float deltaTime)
             Drawables.emplace_back();
             auto& obj = Drawables.back();
 
-            obj.mesh.Load("Assets\\3DObjects\\UntitledSUS.fbx", wnd.Gfx().pDevice);
-            obj.Anchored = false;
+            obj.mesh.Load("C:\\Program Files\\UntilitedGameEngine\\Assets\\UntitledSUS.fbx", wnd.Gfx().pDevice);
+            obj.Anchored = true;
             obj.pos = { 0.0f, 5.0f, 0.0f };
             obj.Velocity = { 0.0f, 0.0f, 0.0f };
-            obj.Orientation = { 0.0f, 0.0f, 0.0f };
-            obj.color = { 255, 0, 0 };
+            obj.Orientation = { 0.0f, timer.Peek(), timer.Peek() };
+            obj.color = { r, 10, 0 };
         }
     }
+
 
     for (auto& obj : Drawables)
     {

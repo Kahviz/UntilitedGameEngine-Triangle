@@ -42,7 +42,8 @@ public:
         bool middleIsPressed;
         int x;
         int y;
-
+        int prevX;
+        int prevY;
     public:
         Event() noexcept
             :
@@ -52,7 +53,9 @@ public:
 			middleIsPressed(false),
             rightIsPressed(false),
             x(0),
-            y(0)
+            y(0),
+            prevX(0),
+            prevY(0)
         {}
 
         Event(Type type, const Mouse& parent) noexcept
@@ -62,7 +65,9 @@ public:
 			rightIsPressed(parent.rightIsPressed),
 			middleIsPressed(parent.middleIsPressed),
 			x(parent.x),
-			y(parent.y)
+			y(parent.y),
+            prevX(parent.prevX),
+            prevY(parent.prevY)
 		{}
         bool IsValid() const noexcept
         {
@@ -74,6 +79,8 @@ public:
 		}
         std::pair<int, int> GetPos() const noexcept;
         int GetPosX() const noexcept;
+        int GetDeltaX() const noexcept;
+        int GetDeltaY() const noexcept;
         int GetPosY() const noexcept;
         bool LeftIsPressed() const noexcept;
         bool RightIsPressed() const noexcept;
@@ -88,6 +95,8 @@ public:
 
 	int GetPosX() const noexcept;
 	int GetPosY() const noexcept;
+    int GetDeltaX() const noexcept;
+    int GetDeltaY() const noexcept;
 	bool IsInWindow() const noexcept;
     bool LeftIsPressed() const noexcept;
     bool RightIsPressed() const noexcept;
@@ -100,6 +109,7 @@ public:
         return buffer.empty();
 	}
 	void Flush() noexcept;
+    void Update() noexcept;
 private:
 	void OnMouseMove(int x, int y) noexcept;
 	void OnMouseLeave() noexcept;
@@ -123,6 +133,8 @@ private:
 
     int x = 0;
     int y = 0;
+    int prevX = 0;
+    int prevY = 0;
 
     bool leftIsPressed = false;
     bool middleIsPressed = false;
