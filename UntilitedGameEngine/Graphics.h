@@ -1,9 +1,20 @@
 #pragma once
 #include <d3d11.h>
-#include "Window.h"
 #include <DirectXMath.h>
-#include <stdexcept>
+#include "Mesh.h"
+#include <string>
 
+using namespace DirectX;
+
+struct ConstantBuffer
+{
+    XMMATRIX transfrom;
+};
+
+struct PixelConstantBuffer
+{
+    XMFLOAT4 color;
+};
 
 class Graphics
 {
@@ -14,20 +25,28 @@ public:
     Graphics& operator=(const Graphics&) = delete;
 
     void EndFrame();
-    void DrawTestTriangle(float angle,int r,int g,int b);
-    void ClearBuffer(float r, float g, float b)
-    {
+    void LoadMesh(const std::string& filename);
+    void DrawMesh(
+        float deltaTime,
+        Mesh& mesh,
+        XMFLOAT3 Orientation,
+        XMFLOAT3& pos,
+        XMINT3 color,
+        XMFLOAT3& Velocity,
+        bool Anchored
+    );
 
-        const float color[] = { r,g,b, 1.0f };
-        pContext->ClearRenderTargetView(pTarget, color);
+    void ClearBuffer(float r, float g, float b);
 
-        pContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-    }
-private:
-    int Fov = DirectX::XMConvertToRadians(90);
-    int AmountOfVerticies = 0;
-    ID3D11DepthStencilView* pDepthStencilView = nullptr;
     ID3D11Device* pDevice = nullptr;
+
+private:
+    Mesh MeshManager;
+    const float Gravity = 9.81f;
+    int Fov = DirectX::XMConvertToRadians(90.0f);
+    int AmountOfVerticies = 0;
+
+    ID3D11DepthStencilView* pDepthStencilView = nullptr;
     ID3D11DeviceContext* pContext = nullptr;
     IDXGISwapChain* pSwap = nullptr;
     ID3D11RenderTargetView* pTarget = nullptr;
@@ -38,4 +57,8 @@ private:
     ID3D11VertexShader* pVS = nullptr;
     ID3D11PixelShader* pPS = nullptr;
     ID3D11InputLayout* pLayout = nullptr;
+
+    ID3D11Buffer* pMeshVertexBuffer = nullptr;
+    ID3D11Buffer* pMeshIndexBuffer = nullptr;
+    UINT MeshIndexCount = 0;
 };

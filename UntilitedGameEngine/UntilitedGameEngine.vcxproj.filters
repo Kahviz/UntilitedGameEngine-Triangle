@@ -46,6 +46,9 @@
     <Filter Include="Header Files\Shader">
       <UniqueIdentifier>{2e6ea389-c06f-41f6-95c0-fcd0ffefdd88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\Mesh">
+      <UniqueIdentifier>{893aff5b-dd54-47e7-a69b-e4f29621a7fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="Expectation.cpp">
       <Filter>Header Files\ErrorHandling\Expectation</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Header Files\Graphics\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Releaser.h">
       <Filter>Header Files\Misc\Releaser</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Graphics\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
