@@ -1,6 +1,7 @@
 #include "App.h"
 #include <thread>
 #include <chrono>
+#include "Graphics.h"
 
 auto const NAME = "Untitled GameEngine";
 
@@ -16,20 +17,17 @@ int App::Go()
 
     while (true)
     {
-        // K‰sitell‰‰n ikkunan tapahtumat
         if (const auto ecode = Window::ProcessMessages())
         {
             return *ecode;
         }
 
-        // Lasketaan delta-aika edellisest‰ framesta
         auto now = clock::now();
         std::chrono::duration<float> delta = now - last;
         last = now;
 
         DoFrame(delta.count());
 
-        // Yritet‰‰n pit‰‰ ~60 FPS
         auto frameTime = clock::now() - now;
         auto sleepTime = std::chrono::milliseconds(16) - frameTime;
         if (sleepTime > std::chrono::milliseconds(0))
@@ -39,15 +37,16 @@ int App::Go()
 
 void App::DoFrame(float deltaTime)
 {
-    static auto r = 0.0f;
-    r += 0.01f;
-    if (r >= 1)
-    {
-        r = 0;
-    }
-    wnd.Gfx().ClearBuffer(r, r, 0);
+    static auto rr = 1;
+    rr += 10;
+    if (rr >= 255)
+        rr = 0;
 
-    wnd.Gfx().DrawTestTriangle();
+    float r = rr / 255.0f;
+    float g = 245 / 255.0f;
+    float b = 47 / 255.0f;
 
+    wnd.Gfx().ClearBuffer(r, 0, 0);
+    wnd.Gfx().DrawTestTriangle(timer.Peek(), rr, 245, 47); 
     wnd.Gfx().EndFrame();
 }

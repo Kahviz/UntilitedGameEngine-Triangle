@@ -1,13 +1,13 @@
 #pragma once
+
 #include "Includer.h"
 #include "Expection.h"
 #include "Keyboard.h"
 #include "Mouse.h"
-#include "Graphics.h"
 #include <optional>
 #include <memory>
 
-
+class Graphics;
 class Window
 {
 public:
@@ -54,7 +54,6 @@ private:
 public:
     Keyboard kbd;
     Mouse mouse;
-    //Graphics gfx;
 private:
     int width;
     int height;
