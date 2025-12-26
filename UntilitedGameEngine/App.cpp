@@ -44,11 +44,6 @@ int App::Go()
         last = now;
 
         DoFrame(delta.count());
-
-        auto frameTime = clock::now() - now;
-        auto sleepTime = std::chrono::milliseconds(16) - frameTime;
-        if (sleepTime > std::chrono::milliseconds(0))
-            std::this_thread::sleep_for(sleepTime);
     }
 }
 
@@ -58,7 +53,7 @@ void App::DoFrame(float deltaTime)
 //CAm Ennen up
     wnd.mouse.Update();
 
-
+    SetWindowTextW(wnd.hWnd, std::to_wstring(1.0f / deltaTime).c_str());
     wnd.Gfx().ClearBuffer(0, 0, 100);
 
     //wnd.Gfx().DrawTestTriangle({ 0.0f, 1.0f, 0.0f, 1.0f }); // vihreä
@@ -78,9 +73,9 @@ void App::DoFrame(float deltaTime)
             auto& obj = Drawables.back();
 
             obj.mesh.Load("C:\\Program Files\\UntilitedGameEngine\\Assets\\UntitledSUS.fbx", wnd.Gfx().pDevice);
-            obj.Anchored = true;
+            obj.Anchored = false;
             obj.pos = { 0.0f, 5.0f, 0.0f };
-            obj.Velocity = { 0.0f, 0.0f, 0.0f };
+            obj.Velocity = { 1.0f, 0.0f, 0.0f };
             obj.Orientation = { 0.0f, timer.Peek(), timer.Peek() };
             obj.color = { r, 10, 0 };
         }
