@@ -1,6 +1,7 @@
 #include "Window.h"
 #include <sstream>
 #include "resource.h"
+#include "Graphics.h"
 
 Window::WindowClass Window::WindowClass::wndClass;
 

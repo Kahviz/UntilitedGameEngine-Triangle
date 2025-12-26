@@ -1,11 +1,9 @@
-struct VSOut
+cbuffer CBuf : register(b0)
 {
-	float4 pos : SV_POSITION;
+    matrix transfrom;
 };
 
-VSOut main(float2 pos : POSITION)
+float4 main(float3 pos : POSITION) : SV_POSITION
 {
-	VSOut o;
-	o.pos = float4(pos, 0.0f, 1.0f);
-	return o;
+    return mul(float4(pos, 1.0f), transfrom);
 }
