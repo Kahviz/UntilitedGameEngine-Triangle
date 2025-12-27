@@ -26,6 +26,9 @@ public:
     Graphics& operator=(const Graphics&) = delete;
 
     Camera& GetCamera();
+    ID3D11Device* GetDevice() noexcept;
+    ID3D11DeviceContext* GetpContext() noexcept;
+
     void EndFrame();
     void DrawMesh(
         float deltaTime,
@@ -37,17 +40,19 @@ public:
         bool Anchored
     );
 
+    
     void ClearBuffer(float r, float g, float b);
 
     void DrawTestTriangle(const XMFLOAT4& color);
 
-    ID3D11Device* pDevice = nullptr;
 private:
     Camera camera;
     Mesh MeshManager;
     const float Gravity = 9.81f;
     int Fov = DirectX::XMConvertToRadians(90.0f);
     int AmountOfVerticies = 0;
+
+    ID3D11Device* pDevice = nullptr;
 
     ID3D11DepthStencilView* pDepthStencilView = nullptr;
     ID3D11DeviceContext* pContext = nullptr;
@@ -61,7 +66,6 @@ private:
     ID3D11PixelShader* pPS = nullptr;
     ID3D11PixelShader* pGUIPS = nullptr;
     ID3D11InputLayout* pLayout = nullptr;
-
     ID3D11Buffer* pMeshVertexBuffer = nullptr;
     ID3D11Buffer* pMeshIndexBuffer = nullptr;
     UINT MeshIndexCount = 0;

@@ -55,6 +55,18 @@
     <Filter Include="Header Files\Controls\Camera">
       <UniqueIdentifier>{22a32ba5-4b22-4a34-847e-219b3c4314da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Libs">
+      <UniqueIdentifier>{976d17a7-1e56-44bf-b3c5-d6c487fa7648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libs\ImGui">
+      <UniqueIdentifier>{fee9e3f9-a8e1-4f2e-8fe2-623419808bd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libs\ImGui\backends">
+      <UniqueIdentifier>{e9091bd1-e2bc-425d-9586-a884c2086cfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\App\ImGuiManager">
+      <UniqueIdentifier>{916fa572-0427-4fee-b257-d859306a7347}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -89,6 +101,30 @@
     </ClCompile>
     <ClCompile Include="CameraControl.cpp">
       <Filter>Header Files\Controls\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>Header Files\Libs\ImGui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>Header Files\Libs\ImGui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiManager.cpp">
+      <Filter>Header Files\App\ImGuiManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Header Files\App</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +166,36 @@
     </ClInclude>
     <ClInclude Include="CameraControl.h">
       <Filter>Header Files\Controls\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>Header Files\Libs\ImGui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>Header Files\Libs\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>Header Files\Libs\ImGui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiManager.h">
+      <Filter>Header Files\App\ImGuiManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files\App</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

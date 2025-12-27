@@ -6,15 +6,21 @@ std::pair<int, int> Mouse::Event::GetPos() const noexcept
 	return { x, y };
 }
 
-int Mouse::Event::GetPosX() const noexcept
-{
-	return x;
-}
-
 int Mouse::GetDeltaX() const noexcept
 {
 	return x - prevX;
 }
+
+int Mouse::GetPosX() const noexcept
+{
+	return x;
+}
+
+int Mouse::GetPosY() const noexcept
+{
+	return y;
+}
+
 
 int Mouse::GetDeltaY() const noexcept
 {

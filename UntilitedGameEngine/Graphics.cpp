@@ -6,6 +6,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <stdexcept>
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"d3dcompiler.lib")
@@ -14,14 +16,17 @@ using namespace DirectX;
 
 Graphics::Graphics(HWND hWnd)
 {
+
+    int screen_width = GetSystemMetrics(SM_CXSCREEN);
+    int screen_height = GetSystemMetrics(SM_CYSCREEN);
     //Kusinen Camera
     camera.SetProjectionValues(90.0f, 800.0f / 600.0f, 0.5f, 1000.0f);
     camera.SetPosition(0.0f, 0.0f, -5.0f);
 
     // Swap chain
     DXGI_SWAP_CHAIN_DESC scd = {};
-    scd.BufferDesc.Width = 800;
-    scd.BufferDesc.Height = 600;
+    scd.BufferDesc.Width = screen_width;
+    scd.BufferDesc.Height = screen_height;
     scd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
     scd.BufferDesc.RefreshRate.Numerator = 60;
     scd.BufferDesc.RefreshRate.Denominator = 1;
@@ -59,8 +64,8 @@ Graphics::Graphics(HWND hWnd)
 
     // Depth stencil
     D3D11_TEXTURE2D_DESC depthDesc = {};
-    depthDesc.Width = 800;
-    depthDesc.Height = 600;
+    depthDesc.Width = screen_width;
+    depthDesc.Height = screen_height;
     depthDesc.MipLevels = 1;
     depthDesc.ArraySize = 1;
     depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -85,8 +90,8 @@ Graphics::Graphics(HWND hWnd)
 
     // Viewport
     D3D11_VIEWPORT vp = {};
-    vp.Width = 800.0f;
-    vp.Height = 600.0f;
+    vp.Width = screen_width;
+    vp.Height = screen_height;
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
     vp.TopLeftX = 0;
@@ -171,6 +176,16 @@ Camera& Graphics::GetCamera()
     return camera;
 }
 
+ID3D11Device* Graphics::GetDevice() noexcept
+{
+    return pDevice;
+}
+
+ID3D11DeviceContext* Graphics::GetpContext() noexcept
+{
+    return pContext;
+}
+
 void Graphics::EndFrame()
 {
     pSwap->Present(1, 0);
@@ -181,11 +196,9 @@ void Graphics::DrawMesh(float deltaTime, Mesh& mesh, XMFLOAT3 Orientation, XMFLO
     if (!pContext || !pConstantBuffer || !pColorBuffer)
         throw std::runtime_error("Graphics not properly initialized");
 
-    // Päivitä maailmanmatriisi
     XMMATRIX world = XMMatrixRotationRollPitchYaw(Orientation.x, Orientation.y, Orientation.z) *
         XMMatrixTranslation(pos.x, pos.y, pos.z);
 
-    // Päivitä fysiikka, jos ei ole kiinnitetty
     if (!Anchored)
     {
         Velocity.y -= Gravity * deltaTime;

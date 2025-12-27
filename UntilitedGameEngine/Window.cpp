@@ -42,39 +42,57 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 }
 
 //Window stuff
-Window::Window(int width, int height, const char* name)
+Window::Window(int width, int height, const char* name, bool fullscreen)
 {
+	SetProcessDPIAware();
+
 	this->width = width;
 	this->height = height;
 
-	RECT wr;
-	wr.left = 100;
-	wr.right = width + wr.left;
-	wr.top = 100;
-	wr.bottom = height + wr.top;
-	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0)
+	DWORD style = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
+	RECT wr = { 0, 0, width, height };
+
+	if (fullscreen)
 	{
-		throw CHWND_LAST_EXCEPT();
+		style = WS_POPUP; // Fullscreen style
+		wr.right = GetSystemMetrics(SM_CXSCREEN);
+		wr.bottom = GetSystemMetrics(SM_CYSCREEN);
 	}
+
+	// AdjustWindowRect huomioi window borderit (tarpeeton fullscreenille, mutta turvallista)
+	AdjustWindowRect(&wr, style, FALSE);
 
 	hWnd = CreateWindowA(
 		WindowClass::GetName(), name,
-		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
+		style,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this
 	);
 
-	if (hWnd == nullptr)
-	{
+	if (!hWnd)
 		throw CHWND_LAST_EXCEPT();
-	}
+
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 
+	// ImGui init
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.DisplaySize = ImVec2((float)GetSystemMetrics(SM_CXSCREEN), (float)GetSystemMetrics(SM_CYSCREEN));
+
+	// Win32 binding
+	ImGui_ImplWin32_Init(hWnd);
+
+	// DX11 binding
 	pGfx = std::make_unique<Graphics>(hWnd);
+	ImGui_ImplDX11_Init(pGfx->GetDevice(), pGfx->GetpContext());
 }
+
 
 Window::~Window()
 {
+	ImGui_ImplDX11_Shutdown();
     DestroyWindow(hWnd);
 }
 
@@ -129,6 +147,10 @@ LRESULT WINAPI Window::HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 
 LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+	{
+		return true;
+	}
 	switch (msg)
 	{
 	case WM_CLOSE:
@@ -164,8 +186,12 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		// Mouse messages
 	case WM_MOUSEMOVE:
 	{
-		POINTS pt = MAKEPOINTS(lParam);
-		
+		POINTS pts = MAKEPOINTS(lParam);
+		POINT pt;
+		pt.x = pts.x;
+		pt.y = pts.y;
+
+
 		if (pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
 		{
 			mouse.OnMouseMove(pt.x, pt.y);
@@ -187,6 +213,7 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 				mouse.OnMouseLeave();
 			}
 		}
+		break;
 	}
 
 	case WM_LBUTTONDOWN:

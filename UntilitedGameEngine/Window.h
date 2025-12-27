@@ -6,6 +6,9 @@
 #include "Mouse.h"
 #include <optional>
 #include <memory>
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
 
 class Graphics;
 class Window
@@ -40,7 +43,7 @@ private:
     };
 
 public:
-    Window(int width, int height, const char* name);
+    Window(int width, int height, const char* name, bool fullscreen);
     ~Window();
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;

@@ -1,42 +1,15 @@
 #pragma once
 #include <sdkddkver.h>
 
+// Minimoi turhat Windows.h-symbolit, mutta s‰ilyt‰ tarvittavat API:t
 #define WIN32_LEAN_AND_MEAN
-#define NOGDICAPMASKS
-#define NOSYSMETRICS
-#define NOMEUNS
-#define NOICONS
-#define NOSYSCOMMANDS
-#define NORASTEROPS
-#define OEMRESOURCE
-#define NOATOM
-#define NOCLIPBOARD
-
-#define NOCOLOR
-#define NOCTLMGR
-#define NODRAWTEXT
-#define NOKERNEL
-#define NONLS
-#define NOMENMMGR
-#define NOMETAFILE
 #define NOMINMAX
-#define NOOPENFILE
-#define NOSCROLL
-#define NOSERVICE
-#define NOSOUND
-#define NOTEXTMETRIC
-#define NOWH
-#define NOCOMM
-#define NOKANJI
-#define NOHELP
-#define NOPROFILER
-#define NODEFERWINDOWPOS
-#define NOMCX
-#define NORPC
-#define NOPROXYSTUB
-#define NOIMAGE
-#define NOTAPE
 
+// Pakolliset include-tiedostot ImGui:lle ja DX11 Win32 backendille
+#include <windows.h>
+#include <commctrl.h>   // scroll, common controls
+#include <windowsx.h>   // helper macros
+#include <shellapi.h>   // shell API (tarvittaessa)
+
+// STRICT m‰‰rittelee tiukemman tyypityksen Win32-handleille
 #define STRICT
-
-#include <Windows.h>
