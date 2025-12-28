@@ -19,7 +19,7 @@ std::string GetAppDataPath() {
     }
     return "";
 }
-
+std::string ProjectName = "ProjectTest1";
 std::string appData = GetAppDataPath(); 
 std::string assets = appData + "\\UntilitedGameEngine\\Assets";
 

@@ -13,4 +13,5 @@ struct Object
     bool Anchored = true;
     std::string Name = "Obj";
     bool Selected = false;
+    std::string Path;
 };

@@ -6,7 +6,7 @@
 #include <Windows.h>
 #include "CameraControl.h"
 #include "Saving.h"
-
+Saving saving;
 App::App()
     : wnd(1920, 1080, "Untitled GameEngine", true)
     , cam(wnd.Gfx().GetCamera())
@@ -15,7 +15,6 @@ App::App()
     io.IniFilename = nullptr;
 }
 
-    
 int App::Go()
 {
     Saving saving;
@@ -53,6 +52,7 @@ void App::AddAMesh(const std::string& Path, const std::string& Name, DirectX::XM
         static_cast<int>(Color3.x * 255.0f),
         static_cast<int>(Color3.y * 255.0f),
         static_cast<int>(Color3.z * 255.0f));
+    obj.Path = Path;
 }
 void App::DoFrame(float deltaTime)
 {
@@ -70,11 +70,6 @@ void App::DoFrame(float deltaTime)
 
     SetWindowTextW(wnd.hWnd, std::to_wstring(1.0f / deltaTime).c_str());
 
-    if (wnd.kbd.KeyIsPressed(VK_CONTROL) && wnd.kbd.KeyIsPressed(0x35))
-    {
-        AddAMesh(assets+"\\UntitledSUS.fbx", "Sus", DirectX::XMFLOAT3(0.0f, 5.0f, 0.0f));
-    }
-
     makeGui.MakeIMGui(
         Drawables,
         [this](const std::string& path, const std::string& name, DirectX::XMFLOAT3 pos) {
@@ -87,4 +82,9 @@ void App::DoFrame(float deltaTime)
     if (wnd.kbd.KeyIsPressed(VK_TAB)) {
         std::exit(-25);
     }
+}
+
+std::vector<Object> App::GetDrawables()
+{
+    return Drawables;
 }

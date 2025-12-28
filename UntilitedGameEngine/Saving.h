@@ -3,7 +3,7 @@
 class Saving
 {
 public:
-	void SaveAll(std::vector<Object> Drawables);
+	void SaveAll(const std::vector<Object>& Drawables);
+	std::vector<Object> LoadDrawables(const std::string& path);
 private:
-	
 };

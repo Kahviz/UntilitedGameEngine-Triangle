@@ -2,6 +2,9 @@
 #include <d3d11.h>
 #include <vector>
 #include <string>
+#include <stdexcept>
+#include "Object.h"
+#include "App.h"
 
 struct Vertex
 {
@@ -11,7 +14,7 @@ struct Vertex
 class Mesh
 {
 public:
-    void Load(const std::string& file, ID3D11Device* device);
+    void Load(const std::string& file, ID3D11Device* device, Object obj);
     void Draw(ID3D11DeviceContext* ctx) const;
 
     std::vector<Vertex> GetVertices() const { return verts; }

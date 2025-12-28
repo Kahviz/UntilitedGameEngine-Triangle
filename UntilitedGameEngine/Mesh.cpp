@@ -2,9 +2,11 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <stdexcept>
 
-void Mesh::Load(const std::string& file, ID3D11Device* device)
+
+App app;
+
+void Mesh::Load(const std::string& file, ID3D11Device* device,Object obj)
 {
     Assimp::Importer imp;
     const aiScene* scene = imp.ReadFile(file, aiProcess_Triangulate);
@@ -33,6 +35,10 @@ void Mesh::Load(const std::string& file, ID3D11Device* device)
     bd.ByteWidth = sizeof(unsigned short) * indexCount;
     sd.pSysMem = inds.data();
     device->CreateBuffer(&bd, &sd, &ib);
+
+    std::vector<Object> Drawables = app.GetDrawables();
+    
+    //obj.Path = file;
 }
 
 void Mesh::Draw(ID3D11DeviceContext* ctx) const
