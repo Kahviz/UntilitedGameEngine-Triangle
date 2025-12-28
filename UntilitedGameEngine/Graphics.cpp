@@ -16,11 +16,14 @@ using namespace DirectX;
 
 Graphics::Graphics(HWND hWnd)
 {
-
-    int screen_width = GetSystemMetrics(SM_CXSCREEN);
-    int screen_height = GetSystemMetrics(SM_CYSCREEN);
     //Kusinen Camera
-    camera.SetProjectionValues(90.0f, 800.0f / 600.0f, 0.5f, 1000.0f);
+    camera.SetProjectionValues(
+        100.0f,
+        static_cast<float>(screen_width) / static_cast<float>(screen_height),
+        0.5f,
+        1000.0f
+    );
+
     camera.SetPosition(0.0f, 0.0f, -5.0f);
 
     // Swap chain

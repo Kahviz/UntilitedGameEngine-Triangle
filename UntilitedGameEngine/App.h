@@ -1,9 +1,10 @@
 #pragma once
+#include <vector>
 #include "Window.h"
-#include "Timer.h"
-#include "Mesh.h"
-#include "CameraControl.h"
-#include "ImGuiManager.h"
+#include "Object.h"
+#include "MakeGui.h"
+#include <DirectXMath.h>
+#include "GLOBALS.h"
 
 class App
 {
@@ -11,14 +12,13 @@ public:
     App();
     int Go();
 
-    void AddAMesh(std::string Path, std::string Name, bool Anchored, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 Orientation, XMINT3 color);
-
+    void AddAMesh(const std::string& Path, const std::string& Name, DirectX::XMFLOAT3 pos);
+    void DoFrame(float deltaTime);
 private:
-    void DoFrame(float deltaTime); // Lisätty deltaTime-parametri
-
-private:
-    ImGuiManager imgui;
-    CameraControl camC;
     Window wnd;
-    Timer timer;
+    Camera cam;
+
+    MakeGui makeGui;
+    std::vector<Object> Drawables;
+    DirectX::XMFLOAT4 Color3 = { 0,0,0,1 };
 };

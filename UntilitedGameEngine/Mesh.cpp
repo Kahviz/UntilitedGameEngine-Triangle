@@ -12,7 +12,7 @@ void Mesh::Load(const std::string& file, ID3D11Device* device)
 
     aiMesh* m = scene->mMeshes[0];
 
-    std::vector<Vertex> verts(m->mNumVertices);
+    verts.resize(m->mNumVertices);
     for (UINT i = 0; i < m->mNumVertices; ++i)
         verts[i] = { m->mVertices[i].x, m->mVertices[i].y, m->mVertices[i].z };
 

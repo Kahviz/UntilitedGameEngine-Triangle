@@ -46,6 +46,9 @@ public:
     void DrawTestTriangle(const XMFLOAT4& color);
 
 private:
+    int screen_width = GetSystemMetrics(SM_CXSCREEN);
+    int screen_height = GetSystemMetrics(SM_CYSCREEN);
+
     Camera camera;
     Mesh MeshManager;
     const float Gravity = 9.81f;

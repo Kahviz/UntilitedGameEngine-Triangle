@@ -64,8 +64,14 @@
     <Filter Include="Header Files\Libs\ImGui\backends">
       <UniqueIdentifier>{e9091bd1-e2bc-425d-9586-a884c2086cfe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\App\ImGuiManager">
+    <Filter Include="Header Files\App\ImGui">
       <UniqueIdentifier>{916fa572-0427-4fee-b257-d859306a7347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libs\Own">
+      <UniqueIdentifier>{3c3314d1-6e8a-47a1-a09f-3fb47fddbdc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Saving">
+      <UniqueIdentifier>{121adf59-5b92-45fe-8710-16f801eaedae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,10 +127,16 @@
       <Filter>Header Files\Libs\ImGui\backends</Filter>
     </ClCompile>
     <ClCompile Include="ImGuiManager.cpp">
-      <Filter>Header Files\App\ImGuiManager</Filter>
+      <Filter>Header Files\App\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Header Files\App</Filter>
+    <ClCompile Include="MakeGui.cpp">
+      <Filter>Header Files\App\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="GLOBALS.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Saving.cpp">
+      <Filter>Header Files\Saving</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,10 +204,19 @@
       <Filter>Header Files\Libs\ImGui\backends</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiManager.h">
-      <Filter>Header Files\App\ImGuiManager</Filter>
+      <Filter>Header Files\App\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files\App</Filter>
+    <ClInclude Include="MakeGui.h">
+      <Filter>Header Files\App\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLOBALS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Saving.h">
+      <Filter>Header Files\Saving</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
